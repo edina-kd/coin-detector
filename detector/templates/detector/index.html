@@ -1,0 +1,389 @@
+{% extends 'detector/base.html' %}
+
+{% block title %}Home - Coin Detector{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">
+            <i class="bi bi-coin"></i> Coin Detection & Counter
+        </h1>
+        <p class="lead mb-0">Comparative Analysis of Computer Vision Algorithms</p>
+        <p class="small">Circularity Detection • Hough Transform • Blob Detection</p>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row">
+        <!-- Main Upload Card -->
+        <div class="col-lg-8 mx-auto">
+            <div class="card p-4">
+                <h3 class="mb-4 text-center">
+                    <i class="bi bi-cloud-upload"></i> Upload Coin Image
+                </h3>
+                
+                <form method="post" enctype="multipart/form-data" id="uploadForm">
+                    {% csrf_token %}
+                    
+                    <!-- Dropzone -->
+                    <div class="dropzone mb-4" id="dropzone">
+                        <i class="bi bi-cloud-arrow-up mb-3"></i>
+                        <h5>Drag & Drop Images Here</h5>
+                        <p class="text-muted">or click to browse (max 6 images)</p>
+                        <input type="file" name="images" id="imageInput" accept="image/jpeg,image/jpg,image/png" class="d-none" required multiple>
+                    </div>
+                    
+                    <!-- Images Preview -->
+                    <div id="imagePreview" class="mb-4 d-none">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0"><span id="fileCount">0</span> image(s) selected</h6>
+                            <button type="button" class="btn btn-sm btn-outline-danger" id="removeAllImages">
+                                <i class="bi bi-trash"></i> Remove All
+                            </button>
+                        </div>
+                        <div id="previewContainer" class="row g-2"></div>
+                    </div>
+                    
+                    <!-- Algorithm Selection -->
+                    <div class="mb-4">
+                        <h5 class="mb-3">
+                            <i class="bi bi-gear"></i> Select Detection Algorithms
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="algorithms" value="circularity" id="algoCircularity" checked>
+                                    <label class="form-check-label" for="algoCircularity">
+                                        <strong>Morphological Circularity</strong>
+                                        <br><small class="text-muted">Python translation of C++/Qt algorithm (Kadrić Durmiš)</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="algorithms" value="hough" id="algoHough" checked>
+                                    <label class="form-check-label" for="algoHough">
+                                        <strong>Hough Transform</strong>
+                                        <br><small class="text-muted">Classical method</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="algorithms" value="blob" id="algoBlob" checked>
+                                    <label class="form-check-label" for="algoBlob">
+                                        <strong>Blob Detection</strong>
+                                        <br><small class="text-muted">Feature-based</small>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Algorithm Parameters -->
+                    <div class="mb-4">
+                        <h5 class="mb-3">
+                            <i class="bi bi-sliders"></i> Algorithm Parameters
+                            <small class="text-muted">(Optional - expand to customize)</small>
+                        </h5>
+                        
+                        <!-- Circularity Parameters -->
+                        <div class="card mb-2">
+                            <div class="card-header">
+                                <a class="text-decoration-none" data-bs-toggle="collapse" href="#circularityParams" role="button" aria-expanded="false">
+                                    <i class="bi bi-chevron-down"></i> Morphological Circularity Parameters
+                                </a>
+                            </div>
+                            <div class="collapse" id="circularityParams">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="circ_threshold" class="form-label">
+                                            Circularity Threshold: <span id="circ_threshold_val">0.85</span>
+                                        </label>
+                                        <input type="range" class="form-range" id="circ_threshold" name="circ_threshold" 
+                                               min="0.5" max="1.0" step="0.05" value="0.85"
+                                               oninput="document.getElementById('circ_threshold_val').textContent = this.value">
+                                        <small class="text-muted">Minimum circularity score (0.5 to 1.0). Higher = more strict circle shape.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Hough Parameters -->
+                        <div class="card mb-2">
+                            <div class="card-header">
+                                <a class="text-decoration-none" data-bs-toggle="collapse" href="#houghParams" role="button" aria-expanded="false">
+                                    <i class="bi bi-chevron-down"></i> Hough Transform Parameters
+                                </a>
+                            </div>
+                            <div class="collapse" id="houghParams">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="hough_minDist" class="form-label">
+                                                Min Distance: <span id="hough_minDist_val">50</span>
+                                            </label>
+                                            <input type="range" class="form-range" id="hough_minDist" name="hough_minDist" 
+                                                   min="10" max="100" step="5" value="50"
+                                                   oninput="document.getElementById('hough_minDist_val').textContent = this.value">
+                                            <small class="text-muted">Min distance between circle centers (pixels)</small>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="hough_param2" class="form-label">
+                                                Accumulator Threshold: <span id="hough_param2_val">50</span>
+                                            </label>
+                                            <input type="range" class="form-range" id="hough_param2" name="hough_param2" 
+                                                   min="10" max="100" step="5" value="50"
+                                                   oninput="document.getElementById('hough_param2_val').textContent = this.value">
+                                            <small class="text-muted">Higher = fewer false positives</small>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="hough_minRadius" class="form-label">
+                                                Min Radius: <span id="hough_minRadius_val">20</span>
+                                            </label>
+                                            <input type="range" class="form-range" id="hough_minRadius" name="hough_minRadius" 
+                                                   min="5" max="50" step="5" value="20"
+                                                   oninput="document.getElementById('hough_minRadius_val').textContent = this.value">
+                                            <small class="text-muted">Minimum circle radius (pixels)</small>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="hough_maxRadius" class="form-label">
+                                                Max Radius: <span id="hough_maxRadius_val">150</span>
+                                            </label>
+                                            <input type="range" class="form-range" id="hough_maxRadius" name="hough_maxRadius" 
+                                                   min="50" max="300" step="10" value="150"
+                                                   oninput="document.getElementById('hough_maxRadius_val').textContent = this.value">
+                                            <small class="text-muted">Maximum circle radius (pixels)</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Blob Parameters -->
+                        <div class="card mb-2">
+                            <div class="card-header">
+                                <a class="text-decoration-none" data-bs-toggle="collapse" href="#blobParams" role="button" aria-expanded="false">
+                                    <i class="bi bi-chevron-down"></i> Blob Detection Parameters
+                                </a>
+                            </div>
+                            <div class="collapse" id="blobParams">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="blob_minArea" class="form-label">
+                                                Min Area: <span id="blob_minArea_val">300</span>
+                                            </label>
+                                            <input type="range" class="form-range" id="blob_minArea" name="blob_minArea" 
+                                                   min="100" max="1000" step="50" value="300"
+                                                   oninput="document.getElementById('blob_minArea_val').textContent = this.value">
+                                            <small class="text-muted">Minimum blob area (pixels²)</small>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="blob_maxArea" class="form-label">
+                                                Max Area: <span id="blob_maxArea_val">50000</span>
+                                            </label>
+                                            <input type="range" class="form-range" id="blob_maxArea" name="blob_maxArea" 
+                                                   min="5000" max="100000" step="5000" value="50000"
+                                                   oninput="document.getElementById('blob_maxArea_val').textContent = this.value">
+                                            <small class="text-muted">Maximum blob area (pixels²)</small>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="blob_minCircularity" class="form-label">
+                                                Min Circularity: <span id="blob_minCircularity_val">0.7</span>
+                                            </label>
+                                            <input type="range" class="form-range" id="blob_minCircularity" name="blob_minCircularity" 
+                                                   min="0.5" max="1.0" step="0.05" value="0.7"
+                                                   oninput="document.getElementById('blob_minCircularity_val').textContent = this.value">
+                                            <small class="text-muted">0.5 to 1.0</small>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="blob_minConvexity" class="form-label">
+                                                Min Convexity: <span id="blob_minConvexity_val">0.8</span>
+                                            </label>
+                                            <input type="range" class="form-range" id="blob_minConvexity" name="blob_minConvexity" 
+                                                   min="0.5" max="1.0" step="0.05" value="0.8"
+                                                   oninput="document.getElementById('blob_minConvexity_val').textContent = this.value">
+                                            <small class="text-muted">0.5 to 1.0</small>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="blob_minInertia" class="form-label">
+                                                Min Inertia: <span id="blob_minInertia_val">0.4</span>
+                                            </label>
+                                            <input type="range" class="form-range" id="blob_minInertia" name="blob_minInertia" 
+                                                   min="0.1" max="1.0" step="0.1" value="0.4"
+                                                   oninput="document.getElementById('blob_minInertia_val').textContent = this.value">
+                                            <small class="text-muted">0.1 to 1.0</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg" id="analyzeBtn" disabled>
+                            <i class="bi bi-search"></i> Analyze Image
+                        </button>
+                    </div>
+                    
+                    <!-- File Requirements -->
+                    <div class="alert alert-info mt-3 mb-0">
+                        <small>
+                            <i class="bi bi-info-circle"></i>
+                            <strong>Requirements:</strong> JPG or PNG format, max 10MB, dimensions between 500×500 and 5000×5000 pixels
+                        </small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Info Cards -->
+    <div class="row mt-5">
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 p-3">
+                <div class="text-center">
+                    <i class="bi bi-speedometer2 text-primary" style="font-size: 2rem;"></i>
+                    <h5 class="mt-3">Fast Processing</h5>
+                    <p class="text-muted">Real-time detection in milliseconds</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 p-3">
+                <div class="text-center">
+                    <i class="bi bi-graph-up text-success" style="font-size: 2rem;"></i>
+                    <h5 class="mt-3">Accurate Results</h5>
+                    <p class="text-muted">Precision and recall metrics included</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 p-3">
+                <div class="text-center">
+                    <i class="bi bi-bar-chart text-warning" style="font-size: 2rem;"></i>
+                    <h5 class="mt-3">Algorithm Comparison</h5>
+                    <p class="text-muted">Side-by-side performance analysis</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const dropzone = document.getElementById('dropzone');
+    const imageInput = document.getElementById('imageInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewContainer = document.getElementById('previewContainer');
+    const fileCount = document.getElementById('fileCount');
+    const removeAllImages = document.getElementById('removeAllImages');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const MAX_FILES = 6;
+    
+    // Click to upload
+    dropzone.addEventListener('click', () => {
+        imageInput.click();
+    });
+    
+    // Drag and drop
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.style.borderColor = 'var(--secondary-color)';
+        dropzone.style.backgroundColor = '#f8f9fa';
+    });
+    
+    dropzone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dropzone.style.borderColor = 'var(--primary-color)';
+        dropzone.style.backgroundColor = 'white';
+    });
+    
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.style.borderColor = 'var(--primary-color)';
+        dropzone.style.backgroundColor = 'white';
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            // Create a new DataTransfer to limit files
+            const dt = new DataTransfer();
+            const limitedFiles = Math.min(files.length, MAX_FILES);
+            for (let i = 0; i < limitedFiles; i++) {
+                dt.items.add(files[i]);
+            }
+            imageInput.files = dt.files;
+            previewImages(dt.files);
+        }
+    });
+    
+    // File input change
+    imageInput.addEventListener('change', (e) => {
+        const files = e.target.files;
+        if (files.length > MAX_FILES) {
+            alert(`You can only upload up to ${MAX_FILES} images at once.`);
+            const dt = new DataTransfer();
+            for (let i = 0; i < MAX_FILES; i++) {
+                dt.items.add(files[i]);
+            }
+            imageInput.files = dt.files;
+        }
+        if (imageInput.files.length > 0) {
+            previewImages(imageInput.files);
+        }
+    });
+    
+    // Preview multiple images
+    function previewImages(files) {
+        previewContainer.innerHTML = '';
+        fileCount.textContent = files.length;
+        
+        Array.from(files).forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const col = document.createElement('div');
+                col.className = 'col-6 col-md-4';
+                col.innerHTML = `
+                    <div class="card">
+                        <img src="${e.target.result}" class="card-img-top" style="height: 150px; object-fit: cover;">
+                        <div class="card-body p-2">
+                            <p class="card-text small mb-0 text-truncate">${file.name}</p>
+                        </div>
+                    </div>
+                `;
+                previewContainer.appendChild(col);
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        imagePreview.classList.remove('d-none');
+        dropzone.classList.add('d-none');
+        analyzeBtn.disabled = false;
+    }
+    
+    // Remove all images
+    removeAllImages.addEventListener('click', () => {
+        imageInput.value = '';
+        previewContainer.innerHTML = '';
+        imagePreview.classList.add('d-none');
+        dropzone.classList.remove('d-none');
+        analyzeBtn.disabled = true;
+    });
+    
+    // Form submission
+    document.getElementById('uploadForm').addEventListener('submit', () => {
+        const fileCount = imageInput.files.length;
+        analyzeBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Processing ${fileCount} image(s)...`;
+        analyzeBtn.disabled = true;
+    });
+</script>
+{% endblock %}
+

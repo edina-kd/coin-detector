@@ -1,0 +1,226 @@
+{
+  "images": [
+    {
+      "filename": "2KM.jpg",
+      "width": 1200,
+      "height": 1600,
+      "total_coins": 1,
+      "coins": [
+        {
+          "id": 1,
+          "center_x": 535,
+          "center_y": 957,
+          "radius": 164
+        }
+      ]
+    },
+    {
+      "filename": "4i05KM.jpg",
+      "width": 1200,
+      "height": 1600,
+      "total_coins": 4,
+      "coins": [
+        {
+          "id": 1,
+          "center_x": 560,
+          "center_y": 1039,
+          "radius": 124
+        },
+        {
+          "id": 2,
+          "center_x": 311,
+          "center_y": 829,
+          "radius": 84
+        },
+        {
+          "id": 3,
+          "center_x": 632,
+          "center_y": 574,
+          "radius": 110
+        },
+        {
+          "id": 4,
+          "center_x": 912,
+          "center_y": 853,
+          "radius": 114
+        }
+      ]
+    },
+    {
+      "filename": "5i05KM.jpg",
+      "width": 1200,
+      "height": 1600,
+      "total_coins": 5,
+      "coins": [
+        {
+          "id": 1,
+          "center_x": 570,
+          "center_y": 790,
+          "radius": 98
+        },
+        {
+          "id": 2,
+          "center_x": 733,
+          "center_y": 531,
+          "radius": 95
+        },
+        {
+          "id": 3,
+          "center_x": 447,
+          "center_y": 492,
+          "radius": 109
+        },
+        {
+          "id": 4,
+          "center_x": 250,
+          "center_y": 800,
+          "radius": 78
+        },
+        {
+          "id": 5,
+          "center_x": 387,
+          "center_y": 1125,
+          "radius": 98
+        }
+      ]
+    },
+    {
+      "filename": "7KM.jpg",
+      "width": 1200,
+      "height": 1600,
+      "total_coins": 6,
+      "coins": [
+        {
+          "id": 1,
+          "center_x": 249,
+          "center_y": 535,
+          "radius": 98
+        },
+        {
+          "id": 2,
+          "center_x": 285,
+          "center_y": 883,
+          "radius": 93
+        },
+        {
+          "id": 3,
+          "center_x": 260,
+          "center_y": 1251,
+          "radius": 104
+        },
+        {
+          "id": 4,
+          "center_x": 603,
+          "center_y": 1016,
+          "radius": 96
+        },
+        {
+          "id": 5,
+          "center_x": 599,
+          "center_y": 732,
+          "radius": 96
+        },
+        {
+          "id": 6,
+          "center_x": 941,
+          "center_y": 886,
+          "radius": 95
+        }
+      ]
+    },
+    {
+      "filename": "7i05KM.jpg",
+      "width": 1200,
+      "height": 1600,
+      "total_coins": 7,
+      "coins": [
+        {
+          "id": 1,
+          "center_x": 429,
+          "center_y": 428,
+          "radius": 119
+        },
+        {
+          "id": 2,
+          "center_x": 215,
+          "center_y": 779,
+          "radius": 90
+        },
+        {
+          "id": 3,
+          "center_x": 577,
+          "center_y": 764,
+          "radius": 103
+        },
+        {
+          "id": 4,
+          "center_x": 377,
+          "center_y": 1125,
+          "radius": 108
+        },
+        {
+          "id": 5,
+          "center_x": 791,
+          "center_y": 1249,
+          "radius": 102
+        },
+        {
+          "id": 6,
+          "center_x": 853,
+          "center_y": 853,
+          "radius": 109
+        },
+        {
+          "id": 7,
+          "center_x": 751,
+          "center_y": 471,
+          "radius": 108
+        }
+      ]
+    },
+    {
+      "filename": "coins.jpg",
+      "width": 3000,
+      "height": 2000,
+      "total_coins": 6,
+      "coins": [
+        {
+          "id": 1,
+          "center_x": 865,
+          "center_y": 906,
+          "radius": 216
+        },
+        {
+          "id": 2,
+          "center_x": 1130,
+          "center_y": 1283,
+          "radius": 166
+        },
+        {
+          "id": 3,
+          "center_x": 1436,
+          "center_y": 1005,
+          "radius": 136
+        },
+        {
+          "id": 4,
+          "center_x": 1995,
+          "center_y": 932,
+          "radius": 137
+        },
+        {
+          "id": 5,
+          "center_x": 1795,
+          "center_y": 1320,
+          "radius": 181
+        },
+        {
+          "id": 6,
+          "center_x": 1522,
+          "center_y": 1592,
+          "radius": 140
+        }
+      ]
+    }
+  ]
+}

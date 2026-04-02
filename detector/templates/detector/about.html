@@ -1,0 +1,178 @@
+{% extends 'detector/base.html' %}
+
+{% block title %}About - Coin Detector{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">
+            <i class="bi bi-info-circle"></i> About This Project
+        </h1>
+        <p class="lead">Comparative Analysis of Circle Detection Methods for Coin Counting</p>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Project Overview -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="mb-3"><i class="bi bi-bullseye"></i> Project Overview</h3>
+                    <p>
+                        This is an educational web application that demonstrates and compares three different
+                        computer vision algorithms for automated coin detection and counting.
+                    </p>
+                    <p>
+                        <strong>Purpose:</strong> Educational demonstration of digital image processing techniques
+                        in computer vision, suitable for university-level teaching and academic publication.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Algorithms -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="mb-3"><i class="bi bi-cpu"></i> Detection Algorithms</h3>
+                    
+                    <div class="mb-4">
+                        <h5 class="text-primary">1. Morphological Circularity Detection</h5>
+                        <p class="mb-2">
+                            <strong>Based on:</strong> Kadrić Durmiš, E. "Brojač kovanica" (Penny Counter)<br>
+                            <small class="text-muted">Python translation of the original C++/Qt implementation (pennydetector.cpp)</small>
+                        </p>
+                        <p class="mb-2">
+                            This is a faithful line-by-line translation combining multiple classical image processing techniques:
+                        </p>
+                        <ul class="mb-2">
+                            <li>Blur for noise reduction (3×3 kernel, cv::blur)</li>
+                            <li>HSV color space transformation and background removal (inRange: 0,70,0 to 255,255,255)</li>
+                            <li>Otsu's adaptive thresholding for binarization</li>
+                            <li>Morphological operations: dilation (5×5, 4 iterations) and erosion (3×3, 1 iteration)</li>
+                            <li>Canny edge detection (thresholds: 100, 200)</li>
+                            <li>External contour extraction (RETR_EXTERNAL, CHAIN_APPROX_SIMPLE)</li>
+                            <li>Geometric filtering using circularity measure</li>
+                        </ul>
+                        <div class="alert alert-light">
+                            <code>Circularity = (4π × Area) / (Perimeter²)</code>
+                        </div>
+                        <p class="mb-0">
+                            Perfect circles: C = 1.0. Empirically determined threshold: C ≥ 0.85
+                        </p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5 class="text-primary">2. Hough Circle Transform</h5>
+                        <p class="mb-0">
+                            Classical computer vision approach that uses parameter space voting to detect circles.
+                            Well-established method that's rotation invariant and robust to noise.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-0">
+                        <h5 class="text-primary">3. Blob Detection</h5>
+                        <p class="mb-0">
+                            Feature-based approach using SimpleBlobDetector with multiple criteria:
+                            area, circularity, convexity, and inertia ratio.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Technology Stack -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="mb-3"><i class="bi bi-stack"></i> Technology Stack</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><strong>Backend</strong></h6>
+                            <ul>
+                                <li>Django 4.2.7</li>
+                                <li>Python 3.10+</li>
+                                <li>OpenCV 4.8+</li>
+                                <li>NumPy, Pillow</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><strong>Frontend</strong></h6>
+                            <ul>
+                                <li>Bootstrap 5.3</li>
+                                <li>Vanilla JavaScript</li>
+                                <li>Chart.js</li>
+                                <li>Bootstrap Icons</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Metrics -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="mb-3"><i class="bi bi-graph-up"></i> Performance Metrics</h3>
+                    <p>The application calculates and displays the following metrics:</p>
+                    
+                    <h5 class="mt-3 mb-2">Basic Metrics</h5>
+                    <ul>
+                        <li><strong>Coins Detected:</strong> Number of coins found in the image</li>
+                        <li><strong>Processing Time:</strong> Algorithm execution time in milliseconds</li>
+                    </ul>
+                    
+                    <h5 class="mt-3 mb-2">Accuracy Metrics (when ground truth available)</h5>
+                    <ul>
+                        <li><strong>Accuracy:</strong> Percentage of correctly detected coins (TP / Total Ground Truth)</li>
+                        <li><strong>Precision:</strong> Ratio of true positives to all detections (TP / (TP + FP))</li>
+                        <li><strong>Recall:</strong> Ratio of detected coins to actual coins (TP / (TP + FN))</li>
+                        <li><strong>F1-Score:</strong> Harmonic mean of precision and recall (2 × P × R / (P + R))</li>
+                        <li><strong>Mean IoU:</strong> Average Intersection over Union for matched detections</li>
+                    </ul>
+                    
+                    <div class="alert alert-info mt-3">
+                        <h6><i class="bi bi-info-circle"></i> What is IoU (Intersection over Union)?</h6>
+                        <p class="mb-2">
+                            IoU measures how well a detected circle overlaps with the ground truth circle. 
+                            It's calculated as the area of overlap divided by the area of union.
+                        </p>
+                        <ul class="mb-0">
+                            <li><strong>IoU = 1.0:</strong> Perfect match</li>
+                            <li><strong>IoU ≥ 0.5:</strong> Good detection (standard threshold)</li>
+                            <li><strong>IoU &lt; 0.5:</strong> Poor detection</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Usage -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="mb-3"><i class="bi bi-book"></i> How to Use</h3>
+                    <ol>
+                        <li>Upload an image containing coins (JPG or PNG format)</li>
+                        <li>Select which detection algorithms to run (or use all three)</li>
+                        <li>Click "Analyze Image" to process</li>
+                        <li>View side-by-side results with performance metrics</li>
+                        <li>Compare algorithm performance using charts</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <!-- Academic Purpose -->
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="mb-3"><i class="bi bi-journal-text"></i> Academic Purpose</h3>
+                    <p>
+                        This project is developed as part of a professional paper (stručni članak) for the journal
+                        <strong>Spoznaja</strong> - Filozofski fakultet Univerziteta u Zenici.
+                    </p>
+                    <p class="mb-0">
+                        <strong>Focus:</strong> Practical comparison of circle detection methods for educational
+                        and teaching purposes, demonstrating real-world applications of computer vision techniques.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

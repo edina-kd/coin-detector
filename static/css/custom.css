@@ -1,0 +1,56 @@
+/* Custom CSS for Coin Detector Application */
+
+/* Additional custom styles can be added here */
+
+/* Smooth transitions */
+* {
+    transition: all 0.3s ease;
+}
+
+/* Image hover effect */
+img {
+    transition: transform 0.3s ease;
+}
+
+img:hover {
+    transform: scale(1.02);
+}
+
+/* Loading animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.spinner-border {
+    animation: spin 1s linear infinite;
+}
+
+/* Badge styling */
+.badge {
+    font-weight: 600;
+    padding: 0.5em 0.75em;
+}
+
+/* Table improvements */
+.table-sm td {
+    padding: 0.5rem;
+}
+
+/* Responsive image containers */
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Print styles */
+@media print {
+    .navbar, footer, .btn {
+        display: none !important;
+    }
+    
+    .card {
+        break-inside: avoid;
+    }
+}
+
