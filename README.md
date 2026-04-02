@@ -13,26 +13,30 @@ This educational tool compares three different circle detection methods:
 
 ## Open source
 
-The application is released under the **MIT License** (see [`LICENSE`](LICENSE)) so readers can reproduce experiments, adapt the code, and use it in teaching. If you refer to this work in a publication, you can cite the repository URL once it is published on GitHub.
+**Repository:** [https://github.com/edina-kd/coin-detector](https://github.com/edina-kd/coin-detector)
+
+The application is released under the **MIT License** (see [`LICENSE`](LICENSE)) so readers can reproduce experiments, adapt the code, and use it in teaching. In publications you can cite the URL above.
 
 **Security note for deployment:** set a unique `DJANGO_SECRET_KEY` and `DJANGO_DEBUG=False` in the server environment for any public or shared host (see [`.env.example`](.env.example)). The default settings are intended for local development only.
 
-### First-time push to GitHub
-
-1. On [GitHub](https://github.com/new), create a **new empty** repository (without adding a README there, if you already have one here).
-2. In the project folder:
+### Clone
 
 ```bash
-git init
-git add -A
-git status   # check that venv/, media/, .env are not listed
-git commit -m "Initial commit: coin detector Django app"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-git push -u origin main
+git clone https://github.com/edina-kd/coin-detector.git
+cd coin-detector
 ```
 
-Replace `YOUR_USERNAME/YOUR_REPO` with your account and repository name. On Windows, use **Git for Windows** or GitHub Desktop if you prefer a GUI.
+### Push updates (after changing code)
+
+```bash
+git add -A
+git status   # provjeri da venv/, media/, .env nisu u listi
+git commit -m "Opis izmjene"
+git push origin main
+```
+
+Ako repozitorij još nema `origin`, jednom dodaj:  
+`git remote add origin https://github.com/edina-kd/coin-detector.git`
 
 ## 🚀 Features
 

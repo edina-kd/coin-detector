@@ -336,7 +336,7 @@ Ovo istraživanje dalo je **komparativnu, eksperimentalno potkrijepljenu sliku**
 
 Budući rad može uključiti veći anotirani skup, preklapanja, strožije post-procesiranje Hough/Blob rezultata i poređenje s dubokim modelima uz eksplicitno navođenje troška podataka i resursa.
 
-Razvijena web aplikacija služi kao *open-source* alat za edukaciju i reprodukciju eksperimenata, što je sastavni dio doprinosa ovog rada.
+Razvijena web aplikacija služi kao *open-source* alat za edukaciju i reprodukciju eksperimenata, što je sastavni dio doprinosa ovog rada. Izvorni kod, testne slike i anotacije dostupni su na: https://github.com/edina-kd/coin-detector (licenca MIT).
 
 ## LITERATURA
 
@@ -432,4 +432,4 @@ This paper reports an experimental comparison of three classical approaches to c
 
 Hough produced many false positives (e.g. 6–107 detections vs. 1–7 coins) despite high IoU on true hits; blob detection often missed coins under difficult contrast or reflections but showed high IoU when it fired. The discussion ties these behaviors to voting in Hough space, edge noise, and blob multi-threshold geometry filters.
 
-Classical methods remain practical for constrained industrial-style setups. The web UI supports upload, parameter adjustment, visualization of detections, and export of results for further analysis.
+Classical methods remain practical for constrained industrial-style setups. The web UI supports upload, parameter adjustment, visualization of detections, and export of results for further analysis. Source code, test images, and annotations are openly available at https://github.com/edina-kd/coin-detector (MIT license).
