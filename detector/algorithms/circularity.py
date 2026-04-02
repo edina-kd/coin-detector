@@ -1,23 +1,9 @@
 """
-Morphological Circularity-Based Coin Detection Algorithm
-Python implementation of the algorithm by Edina Kadrić Durmiš
+Morphological coin-detection pipeline (this work).
 
-This is a faithful Python/OpenCV translation of the original C++/Qt implementation
-from "Brojač kovanica" (Penny Counter). The algorithm combines classical image 
-processing techniques in a specific pipeline:
-
-Pipeline (from pennydetector.cpp):
-1. Blur: 3×3 kernel (cv::blur)
-2. Background removal: HSV inRange (0,70,0) to (255,255,255)
-3. Threshold: Otsu's adaptive binarization
-4. Dilate: 5×5 kernel, 4 iterations
-5. Erode: 3×3 kernel, 1 iteration
-6. Canny edge detection: thresholds (100, 200)
-7. Find external contours: RETR_EXTERNAL, CHAIN_APPROX_SIMPLE
-8. Filter by circularity: C = (4π × Area) / (Perimeter²), threshold ≥ 0.85
-
-Reference: Kadrić Durmiš, E. "Brojač kovanica" - Coin Counter (C++/Qt/OpenCV)
-Original source: pennydetector.cpp, backgroundremover.cpp
+OpenCV pipeline: blur, HSV background mask, Otsu threshold, dilation/erosion,
+Canny edges, external contours, circularity filter
+C = (4π × Area) / (Perimeter²), default threshold ≥ 0.85.
 """
 
 import cv2
@@ -26,13 +12,7 @@ import time
 
 
 class CircularityDetector:
-    """
-    Morphological Circularity-Based Coin Detector
-    
-    This detector implements a multi-step image processing pipeline
-    combining morphological operations with geometric filtering to
-    detect circular objects (coins) in images.
-    """
+    """Morphological approach to coin-shaped objects: pipeline + circularity filter."""
     
     def __init__(self, circularity_threshold=0.85):
         """
@@ -43,7 +23,7 @@ class CircularityDetector:
                                  Empirically determined threshold for coin-like circles
         """
         self.circularity_threshold = circularity_threshold
-        self.name = "Morphological Circularity Detection"
+        self.name = "Morphological approach (this work)"
     
     def calculate_circularity(self, contour):
         """

@@ -27,7 +27,7 @@ class DetectionResult(models.Model):
     """Stores detection results for each algorithm"""
     
     ALGORITHM_CHOICES = [
-        ('circularity', 'Morphological Circularity Detection'),
+        ('circularity', 'Morphological approach (this work)'),
         ('hough', 'Hough Circle Transform'),
         ('blob', 'Blob Detection'),
     ]

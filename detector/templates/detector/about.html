@@ -37,16 +37,12 @@
                     <h3 class="mb-3"><i class="bi bi-cpu"></i> Detection Algorithms</h3>
                     
                     <div class="mb-4">
-                        <h5 class="text-primary">1. Morphological Circularity Detection</h5>
+                        <h5 class="text-primary">1. Morphological approach (this work)</h5>
                         <p class="mb-2">
-                            <strong>Based on:</strong> Kadrić Durmiš, E. "Brojač kovanica" (Penny Counter)<br>
-                            <small class="text-muted">Python translation of the original C++/Qt implementation (pennydetector.cpp)</small>
-                        </p>
-                        <p class="mb-2">
-                            This is a faithful line-by-line translation combining multiple classical image processing techniques:
+                            Pipeline implemented in this project, combining classical image processing steps:
                         </p>
                         <ul class="mb-2">
-                            <li>Blur for noise reduction (3×3 kernel, cv::blur)</li>
+                            <li>Blur for noise reduction (3×3 kernel)</li>
                             <li>HSV color space transformation and background removal (inRange: 0,70,0 to 255,255,255)</li>
                             <li>Otsu's adaptive thresholding for binarization</li>
                             <li>Morphological operations: dilation (5×5, 4 iterations) and erosion (3×3, 1 iteration)</li>
