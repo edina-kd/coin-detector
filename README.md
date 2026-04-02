@@ -1,12 +1,12 @@
 # Coin detector (web)
 
-Mala **Django** aplikacija koja na slici pokreće tri pristupa detekciji kružnih objekata (morfološki *pipeline*, Hough krugovi, OpenCV *blob*) i prikazuje rezultate u pregledniku. U repozitoriju su i testne slike te `ground_truth/annotations.json` za usporedbu s anotacijama.
+Small **Django** app that runs three circle-detection approaches on an uploaded image (morphological pipeline, Hough circles, OpenCV blob) and shows results in the browser. The repo includes sample images and `ground_truth/annotations.json` for comparison with manual annotations.
 
-**Repozitorij:** [github.com/edina-kd/coin-detector](https://github.com/edina-kd/coin-detector) · **Licenca:** [MIT](LICENSE)
+**Repository:** [github.com/edina-kd/coin-detector](https://github.com/edina-kd/coin-detector) · **License:** [MIT](LICENSE)
 
-## Reprodukcija (lokalno)
+## Run locally
 
-Potreban je **Python 3.10+** i običan preglednik.
+You need **Python 3.10+** and a web browser.
 
 ```bash
 git clone https://github.com/edina-kd/coin-detector.git
@@ -23,8 +23,8 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-Otvori **http://127.0.0.1:8000/** , učitaj JPG/PNG i pokreni obradu.
+Open **http://127.0.0.1:8000/**, upload JPG/PNG images, and run detection.
 
-**Napomena:** Ako si projekat prenio s Maca i folder `venv` već postoji, na Windowsu ga obriši i napravi novi (`python -m venv venv` kao gore). Alternativa na Windowsu: `run_dev_server_windows.bat` (nakon što je `venv` ispravno napravljen).
+On Windows you can start the server with **`run_dev_server_windows.bat`** after the virtual environment is set up (same `venv` folder as above).
 
-Za javni server postavi varijable okruženja `DJANGO_SECRET_KEY` i `DJANGO_DEBUG=False` (vidi [.env.example](.env.example)).
+For a public deployment, set `DJANGO_SECRET_KEY` and `DJANGO_DEBUG=False` in the environment (see [.env.example](.env.example)).
